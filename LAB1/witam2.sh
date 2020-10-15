@@ -2,7 +2,7 @@
 
 data=$(LC_ALL=C date);
 
-data=$(echo $data | head -n1 | awk '{print $1;}');
+data=$(echo $data | awk '{print $1;}');
 
 if [ $data == "Sun" -o $data == "Sat" ] ; then
 	echo "Mamy weekend, mozna odpoczac!";

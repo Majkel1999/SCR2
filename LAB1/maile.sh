@@ -8,7 +8,7 @@ while read line; do
 done < <(find ./ -name "spec*.pdf")
 
 while read line; do
-	echo mail -s "'Zapytanie o oferte'" $att $line < tresc.txt
+	mail -s "'Zapytanie o oferte'" $att $line < tresc.txt
 done < $file
 
 

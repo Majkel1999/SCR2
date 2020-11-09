@@ -1,0 +1,82 @@
+ <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <signal.h>
+#include <unistd.h>
+#include <ucontext.h>
+
+int flag = 0;
+
+void sigHandler(int sigNo, siginfo_t *si, ucontext_t *u)
+{
+    if (sigNo == SIGUSR1)
+    {
+        printf("SIGUSR1 odebrano - nic nie robie\n");
+    }
+    else if (sigNo == SIGUSR2)
+    {
+        printf("SIGUSR2 odebrano - koncze prace\n");
+        exit(1);
+    }
+    else if (sigNo == SIGTERM)
+    {
+        printf("SIGTERM \n");
+    }
+    else if (sigNo == SIGALRM)
+    {
+        printf("SIGALRM odebrano - ignoruje ten sygnal przez kolejne 1000 iteracji\n");
+        flag = 1;
+    }
+}
+
+int main()
+{
+    sigset_t signalSet1, signalSet2, signalSet3;
+    sigemptyset(&signalSet1);
+    sigemptyset(&signalSet2);
+    sigemptyset(&signalSet3);
+    sigaddset(&signalSet1, SIGUSR1);
+    sigaddset(&signalSet1, SIGUSR2);
+    sigaddset(&signalSet2, SIGALRM);
+    sigaddset(&signalSet3, SIGTERM);
+
+    sigprocmask(SIG_UNBLOCK, &signalSet1, NULL);
+    sigprocmask(SIG_UNBLOCK, &signalSet2, NULL);
+    sigprocmask(SIG_BLOCK, &signalSet3, NULL);
+
+    struct sigaction act;
+    act.sa_handler = sigHandler;
+    act.sa_flags = SA_SIGINFO;
+
+    sigaction(SIGUSR1, &act, 0);
+    sigaction(SIGUSR2, &act, 0);
+    sigaction(SIGALRM, &act, 0);
+
+    struct timespec tv;
+    tv.tv_sec = 0;
+    tv.tv_nsec = 100000000L;
+    printf("My PID is %ld\n", (long)getpid());
+    int i = 0;
+    int counter = 0;
+    while (1)
+    {
+        ++i;
+        --i;
+        nanosleep(&tv, (struct timespec *)NULL);
+        if (flag == 1 || flag == 2)
+        {
+            if (flag == 1)
+            {
+                sigprocmask(SIG_BLOCK, &signalSet2, NULL);
+                flag = 2;
+            }
+            counter++;
+            if (counter >= 1000)
+            {
+                sigprocmask(SIG_UNBLOCK, &signalSet2, NULL);
+                flag = 0;
+                counter = 0;
+            }
+        }
+    }
+}

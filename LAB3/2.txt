@@ -1,0 +1,17 @@
+W pliku /proc/[pid]/status znajdują się pola:
+SigBlk - maska sygnalow blokowanych
+SigIgn - maska sygnalow ignorowanych
+SigCgt - maska sygnalow wylapywanych
+
+
+Plik w folderze /proc/[pid]/fd po poleceniu ls -al
+
+Pipe1:135763
+
+Pipe2: 135763 / 135765
+
+Pipe3: 135765
+
+Kolejnosc numerow pozwala okreslic kolejnosc wystepowania w potoku.
+Srodkowy element ma otwarte 2 potoki o tych samych numerach co dwa pozostale programy.
+Potok o mniejszym numerze w folderze fd jest pierwszy.

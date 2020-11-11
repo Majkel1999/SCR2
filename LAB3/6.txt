@@ -1,0 +1,40 @@
+Program Hello World wykonuje jedno polecenie Write aby wypisac nasze dane na ekran i nastepnie zwraca wartosc z jaka zostaje zakonczony.
+
+
+script /tmp/bash.strace
+strace bash
+//ctrl + d x2
+Plik /tmp/bash.strace ma w sobie zapisany cały output co pozwala na swobodne przegladanie
+wyszukujemy plikow w /home/uzytkownik oraz takich ktore maja poczatek open
+grep --line-buffered /home/majkel bash.strace | grep open
+
+openat(AT_FDCWD, "/home/majkel/.bashrc", O_RDONLY) = 3
+openat(AT_FDCWD, "/home/majkel/.bash_history", O_RDONLY) = 3
+openat(AT_FDCWD, "/home/majkel/.bash_history", O_RDONLY) = 3
+openat(AT_FDCWD, "/home/majkel/.bash_history", O_RDONLY) = 3
+
+
+oprocz tego sprawdzmy pliki conf
+
+grep conf bash.strace
+
+openat(AT_FDCWD, "/etc/nsswitch.conf", O_RDONLY|O_CLOEXEC) = 3
+read(3, "# /etc/nsswitch.conf\n#\n# Example"..., 4096) = 556
+
+
+Polecenie ls wywoluje printf tylko 1 raz - na samym koncu, ze wszytskimi plikami w katalogu.
+Polecenie ls -al wywoluje printf dla kazdej lini ktora wypisuje.
+
+Pico oraz nano tworza ukryty plik o takiej samej nazwie co wejsciowy, z roznica rozszerzenia .swp
+Plik jest otwierany tylko do operacji odczytu oraz zapisu, inaczej praca 
+odbywa sie na kopii tego pliku. 
+
+
+Aplikacja wyswietlajaca Hello World posiada 3 file deskryptory -
+STDout - /dev/pts/x
+STDin -	/dev/pts/x
+STDerr - /dev/pts/x 
+Wszystkie trzy strumienie przekierowywane sa na terminal na ktorym zostal 
+otwarty dany program.
+
+

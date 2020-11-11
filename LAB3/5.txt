@@ -1,0 +1,10 @@
+Strace:
+Najwazniejsza opcja jest "-e" pozwalajacy na zadanie sledzenia tylko
+podanych wyrazen, czyli np -e read pokazuje tylko miejsca w ktorych
+program probowal cos odczytac
+
+-r pozwala odczytac czas pomiedzy poszczegolnymi wywolaniami
+
+-t wyswietla czas wywolania systemowego
+
+-o plik zapisuje wynik dzialania programu do pliku

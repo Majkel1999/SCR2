@@ -1,0 +1,6 @@
+Program z zadania 7 zostaje zabity przez sygnal SIGSEGV - nieautoryzowany dostep do pamieci.
+Wida ze ten blad powoduje wypisywanie napisu na ekranie - wypisuje on pojedynczy znak z tablicy znakow
+lecz nie ma koncowego warunku dla ktorego ma skonczyc - proboje odczytac spoza tablicy.
+
+Aby zmierzyc czas wykonywania poszczegolnych polecen nalezy dodac -r do polecenia strace. 
+Pokaze nam to relatywny czas poszczegolnych polecen.	

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         close(fd[0]);
         int file_fd = open(argv[1], O_RDONLY);
         int buffer[255];
-        while (read(file_fd, buffer, 256) > 0)
+        while (read(file_fd, buffer, 255) > 0)
         {
             write(fd[1], buffer, strlen(buffer));
             for (int i = 0; i < 255; i++)

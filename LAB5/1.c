@@ -10,7 +10,7 @@ int main()
 {
     char fileName[100];
     int fd, fd_mem, size;
-    char *addres = NULL;
+    int *addres = NULL;
     while (1)
     {
         printf("Podaj nazwe pliku: ");
@@ -29,7 +29,8 @@ int main()
         }
         size = lseek(fd, 0, SEEK_END);
         ftruncate(fd_mem, size);
-        addres = (char *)mmap(NULL, size, PROT_WRITE | PROT_READ, MAP_SHARED, fd_mem, 0);
+        lseek(fd, 0, SEEK_SET);
+        addres = (int *)mmap(NULL, size, PROT_WRITE | PROT_READ, MAP_SHARED, fd_mem, 0);
         read(fd, addres, size);
         msync(addres, size, MS_ASYNC);
         close(fd);
